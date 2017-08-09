@@ -109,6 +109,7 @@ namespace Microsoft.SqlTools.Hosting.Protocol
             // Now that we have a message, reset the buffer's state
             ShiftBufferBytesAndShrink(readOffset);
 
+            Logger.Write(LogLevel.Normal, "Request Message: " + messageContent);
             // Get the JObject for the JSON content
             JObject messageObject = JObject.Parse(messageContent);
 

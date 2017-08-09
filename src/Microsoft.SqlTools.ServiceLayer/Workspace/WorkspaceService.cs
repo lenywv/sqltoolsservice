@@ -209,6 +209,7 @@ namespace Microsoft.SqlTools.ServiceLayer.Workspace
                 msg.Append("HandleDidChangeTextDocumentNotification");
                 List<ScriptFile> changedFiles = new List<ScriptFile>();
 
+                Logger.Write(LogLevel.Normal, "TextChangeParams = [" + textChangeParams.ToString() +"]\n EventContext = [" + eventContext.ToString() +"]");
                 // A text change notification can batch multiple change requests
                 foreach (var textChange in textChangeParams.ContentChanges)
                 {

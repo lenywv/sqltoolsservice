@@ -100,6 +100,8 @@ namespace Microsoft.SqlTools.ServiceLayer.Workspace.Contracts
         public TextDocumentItem TextDocument { get; set; }
     }
 
+
+    [DebuggerDisplay("TextDocument = {TextDocument.ToString()} ContentChanges = {ContentChanges.ToString()}")]
     public class DidChangeTextDocumentParams
     {
         /// <summary>
@@ -111,19 +113,39 @@ namespace Microsoft.SqlTools.ServiceLayer.Workspace.Contracts
         /// Gets or sets the list of changes to the document content.
         /// </summary>
         public TextDocumentChangeEvent[] ContentChanges { get; set; }
+
+        public override string ToString()
+        {
+            string change ="[";
+            foreach (TextDocumentChangeEvent changed in ContentChanges)
+            {
+                change += changed.ToString() +", ";
+            }
+            change +="]";
+
+            return string.Format("TextDocument : {0}, ContentChanges : {1}", 
+                    TextDocument.ToString(), change);
+        }
     }
 
     /// <summary>
     /// Define a specific version of a text document
     /// </summary>
+    [DebuggerDisplay("Version = {Version.ToString()}")]
     public class VersionedTextDocumentIdentifier : TextDocumentIdentifier
     {        
         /// <summary>
         /// Gets or sets the Version of the changed text document 
         /// </summary>
         public int Version { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("Version = [{0}]", Version.ToString());
+        }
     }
 
+    [DebuggerDisplay("Range = {Range.ToString()} RangeLength = {RangeLength} Text = {Text}")]
     public class TextDocumentChangeEvent
     {
         /// <summary>
@@ -143,6 +165,11 @@ namespace Microsoft.SqlTools.ServiceLayer.Workspace.Contracts
         /// Gets or sets the new text of the document.
         /// </summary>
         public string Text { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("Range = [{0}] RangeLength = {1} Text = {2}", Range.ToString(), RangeLength, Text);
+        }
     }
 
     [DebuggerDisplay("Position = {Line}:{Character}")]
@@ -230,6 +257,11 @@ namespace Microsoft.SqlTools.ServiceLayer.Workspace.Contracts
             hash = hash * 23 + Start.GetHashCode();
             hash = hash * 23 + End.GetHashCode();
             return hash;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Start = {0}:{1}, End = {2}:{3}", Start.Line, Start.Character, End.Line, End.Character);
         }
     }
 

@@ -68,6 +68,8 @@ namespace Microsoft.SqlTools.Hosting.Protocol
                     Constants.JsonSerializerSettings);
 
             byte[] messageBytes = Encoding.UTF8.GetBytes(serializedMessage);
+            
+            Logger.Write(LogLevel.Normal, "Response Message: " + serializedMessage);
             byte[] headerBytes = 
                 Encoding.ASCII.GetBytes(
                     string.Format(

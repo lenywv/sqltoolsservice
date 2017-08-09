@@ -36,10 +36,16 @@ namespace Microsoft.SqlTools.ServiceLayer.Hosting
         /// prior to the process shutting down.
         /// </summary>
         private const int ShutdownTimeoutInSeconds = 120;
-        public static readonly string[] CompletionTriggerCharacters = new string[] { ".", "-", ":", "\\", "[", "\"" };
+        public static readonly string[] CompletionTriggerCharacters = new string[] { ".", "-", ":", "\\", "[", "\"", "$$(" };
         private IMultiServiceProvider serviceProvider;
 
         #region Singleton Instance Code
+
+    
+        /// <summary>
+        /// Singleton instance of the service client for internal storage
+        /// </summary>
+        public static  ServiceClient serviceClient {get; set;}
 
         /// <summary>
         /// Singleton instance of the service host for internal storage

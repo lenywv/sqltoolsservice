@@ -6,6 +6,7 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Collections.Generic;
 
 namespace Microsoft.SqlTools.ServiceLayer.Utility
 {
@@ -21,6 +22,7 @@ namespace Microsoft.SqlTools.ServiceLayer.Utility
         {
             ErrorMessage = string.Empty;
             Locale = string.Empty;
+            List<string> argListForMSSqlTools = new List<string>();
 
             try
             {
@@ -37,12 +39,19 @@ namespace Microsoft.SqlTools.ServiceLayer.Utility
                         {
                             case "-enable-logging":
                                 EnableLogging = true;
+                                argListForMSSqlTools.Add(argName);
                                 break;
                             case "-log-dir":
                                 SetLoggingDirectory(args[++i]);
+                                argListForMSSqlTools.Add(argName);
+                                argListForMSSqlTools.Add(args[++i]);
+                                break;
+                            case "-mssqltools-exec":
+                                SetMsSqlToolsPath(args[++i]);
                                 break;
                             case "-locale":
                                 SetLocale(args[++i]);
+                                argListForMSSqlTools.Add(argName);
                                 break;
                             case "h":
                             case "-help":
@@ -54,6 +63,7 @@ namespace Microsoft.SqlTools.ServiceLayer.Utility
                         }
                     }
                 }
+                MSSqlToolsArgs= argListForMSSqlTools.ToArray();
             }
             catch (Exception ex)
             {
@@ -82,6 +92,16 @@ namespace Microsoft.SqlTools.ServiceLayer.Utility
         /// Gets the directory where log files are output.
         /// </summary>
         public string LoggingDirectory { get; private set; }
+
+        /// <summary>
+        /// Gets the path where the language server for ms sql is
+        /// </summary>
+        public string MSSqlToolsPath { get; private set; }
+        
+        /// <summary>
+        /// Gets the arguments for mssql language server
+        /// </summary>
+        public string[] MSSqlToolsArgs { get;}
 
         /// <summary>
         /// Whether the program should exit immediately. Set to true when the usage is printed.
@@ -120,6 +140,16 @@ namespace Microsoft.SqlTools.ServiceLayer.Utility
             }
 
             this.LoggingDirectory = Path.GetFullPath(loggingDirectory);
+        }
+
+        private void SetMsSqlToolsPath(string msSqlToolsPath)
+        {
+            if (string.IsNullOrWhiteSpace(msSqlToolsPath))
+            {
+                return;
+            }
+
+            this.MSSqlToolsPath = msSqlToolsPath;
         }
 
         private void SetLocale(string locale)
